@@ -52,8 +52,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
         // Redirect kembali ke halaman sebelumnya
         return redirect()->back();
     }
