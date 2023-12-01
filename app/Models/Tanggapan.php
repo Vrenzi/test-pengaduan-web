@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pengaduan;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tanggapan extends Model
 {
@@ -13,6 +15,15 @@ class Tanggapan extends Model
     {
         return $this->hasMany(Pengaduan::class, 'id_tanggapan', 'id');
     }
+
+    // Di dalam model Tanggapan.php
+
+    public function petugas()
+    {
+        return $this->belongsTo(User::class, 'id_petugas');
+    }
+
+
 
     protected $fillable = [
         'id',

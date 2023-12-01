@@ -18,10 +18,17 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(): \Illuminate\View\View|\Illuminate\Http\RedirectResponse
     {
-        return view('auth.register');
+        // Periksa apakah pengguna yang mencoba mengakses halaman pendaftaran adalah admin
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return view('auth.register');
+        } else {
+            // Pengguna bukan admin, alihkan ke halaman yang sesuai atau beri pesan kesalahan
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        }
     }
+
 
     /**
      * Handle an incoming registration request.
@@ -47,6 +54,35 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // Redirect kembali ke halaman sebelumnya
+        return redirect()->back();
+    }
+
+    public function edit($id)
+    {
+        // Cek apakah pengguna yang sedang login adalah admin
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            // Logika untuk mengambil data petugas berdasarkan ID dan menampilkan form edit
+            $petugas = User::find($id);
+            return view('edit_petugas', ['petugas' => $petugas]);
+        } else {
+            // Pengguna bukan admin, kembalikan ke halaman lain atau tampilkan pesan kesalahan
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        }
+    }
+
+    // Fungsi untuk menghapus petugas
+    public function delete($id)
+    {
+        // Cek apakah pengguna yang sedang login adalah admin
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            // Logika untuk menghapus petugas berdasarkan ID
+            User::destroy($id);
+            // Redirect ke halaman lain atau tampilkan pesan sukses
+            return redirect()->route('petugas')->with('success', 'Petugas berhasil dihapus.');
+        } else {
+            // Pengguna bukan admin, kembalikan ke halaman lain atau tampilkan pesan kesalahan
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        }
     }
 }

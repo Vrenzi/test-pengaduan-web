@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Website;
 
 use App\Models\Pengaduan;
+use App\Models\User;
 use App\Models\Tanggapan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,13 +16,11 @@ class TanggapanController extends Controller
     {
         $user = Auth::user();
 
-        // Jika pengguna adalah admin, tampilkan semua tanggapan
         if ($user->role === 'admin') {
-            $data = Tanggapan::all();
+            $data = Tanggapan::with('petugas')->get();
         } else {
-            // Jika bukan admin, ambil data tanggapan berdasarkan ID petugas yang login
             $idPetugas = $user->id;
-            $data = Tanggapan::where('id_petugas', $idPetugas)->get();
+            $data = Tanggapan::with('petugas')->where('id_petugas', $idPetugas)->get();
         }
 
         return view('tanggapan', compact('data'));
@@ -56,7 +55,7 @@ class TanggapanController extends Controller
         $pengaduan->save();
 
         // Redirect atau tampilkan pesan sukses
-        return redirect()->route('dashboard')
+        return redirect()->route('home')
             ->with('success', 'Tanggapan berhasil disimpan.');
     }
 }

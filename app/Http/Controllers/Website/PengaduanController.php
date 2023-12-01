@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers\Website;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Pengaduan;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PengaduanController extends Controller
 {
     public function index()
     {
-        $data = Pengaduan::all(); // Mengambil semua data dari model
-        return view('nama_view', ['data' => $data]); // Mengirim data ke view
+        $data = Pengaduan::all();
+        return view('dashboard', ['data' => $data]);
+    }
+
+    public function exportToPdf()
+    {
+        $pengaduans = Pengaduan::all();
+        $data = ['pengaduans' => $pengaduans];
+        $pdf = pdf::loadView('pdf', $data);
+        return $pdf->download('pengaduan_report_all.pdf');
     }
 }

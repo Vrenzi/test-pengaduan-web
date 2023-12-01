@@ -14,6 +14,12 @@ class Pengaduan extends Model
         return $this->hasMany(Tanggapan::class, 'id_pengaduan', 'id');
     }
 
+    public function masyarakat()
+    {
+        return $this->belongsTo(Masyarakat::class, 'nik', 'nik');
+    }
+
+
     protected $fillable = [
         'nik',
         'tgl_pengaduan',

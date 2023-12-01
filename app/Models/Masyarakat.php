@@ -13,8 +13,8 @@ class Masyarakat extends Model
     protected $fillable = [
         'nik',
         'nama',
-        'username',
-        'telp',
+        'email',
+        'no_telp',
         'password',
     ];
 }

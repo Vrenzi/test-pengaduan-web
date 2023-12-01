@@ -145,4 +145,30 @@ class PengaduanController extends Controller
         ];
         return response()->json($data, 200);
     }
+
+    public function sendImage($id)
+    {
+        // Assuming there is an 'id' column in the 'pengaduans' table
+        // Log::info("Request to send image for ID: $id");
+        $pengaduan = Pengaduan::find($id);
+
+        if ($pengaduan && $pengaduan->foto) {
+            // Get the file path from the database
+            $fotoPath = $pengaduan->foto;
+
+            // Construct the full file path
+            $fullPath = public_path("/storage/$fotoPath");
+
+            // Check if the file exists before sending it
+            if (file_exists($fullPath)) {
+                return response()->file($fullPath);
+            } else {
+                // Handle the case when the file does not exist
+                abort(404, 'Image not found');
+            }
+        } else {
+            // Handle the case when no pengaduan or foto is found
+            abort(404, 'Pengaduan or Image not found');
+        }
+    }
 }

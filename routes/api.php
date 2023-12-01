@@ -21,16 +21,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('pengaduan',[PengaduanController::class, 'index']);
-Route::get('pengaduan/{nik}',[PengaduanController::class, 'getByNik']);
-Route::post('pengaduan',[PengaduanController::class, 'store']);
-Route::put('pengaduan/edit/{id}',[PengaduanController::class, 'update']);
-Route::delete('pengaduan/delete/{id}',[PengaduanController::class, 'destroy']);
+Route::get('pengaduan', [PengaduanController::class, 'index']);
+Route::get('pengaduan/{nik}', [PengaduanController::class, 'getByNik']);
+Route::post('pengaduan', [PengaduanController::class, 'store']);
+Route::put('pengaduan/edit/{id}', [PengaduanController::class, 'update']);
+Route::get('image/{nik}', [PengaduanController::class, 'sendImage']);
+Route::delete('pengaduan/delete/{id}', [PengaduanController::class, 'destroy']);
 Route::delete('masyarakat/delete/{id}', [MasyarakatController::class, 'destroy']);
-Route::get('masyarakat',[MasyarakatController::class, 'index']);
-Route::post('register',[MasyarakatController::class, 'register']);
-Route::post('login',[MasyarakatController::class, 'login']);
-Route::post('logout',[MasyarakatController::class, 'logout'])->middleware('auth:sanctum');
-Route::put('masyarakat/edit/{id}',[MasyarakatController::class, 'update']);
-Route::get('masyarakat/{id}',[MasyarakatController::class, 'getById']);
-
+Route::get('masyarakat', [MasyarakatController::class, 'index']);
+Route::post('register', [MasyarakatController::class, 'register']);
+Route::post('login', [MasyarakatController::class, 'login']);
+Route::post('logout', [MasyarakatController::class, 'logout'])->middleware('auth:sanctum');
+Route::put('masyarakat/edit/{id}', [MasyarakatController::class, 'update']);
+Route::get('masyarakat/{id}', [MasyarakatController::class, 'getById']);
